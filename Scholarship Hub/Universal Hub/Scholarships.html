@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal Student Hub — Scholarships</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ── SCHOLARSHIPS-ONLY STYLES ── */
+
+      .page-hero h1 span {
+        color: var(--green);
+      }
+
+      .sch-stats {
+        display: flex;
+        gap: 16px;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+      .sch-stat {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 24px;
+        text-align: center;
+      }
+      .sch-stat strong {
+        display: block;
+        font-size: 24px;
+        font-weight: 900;
+        color: var(--green);
+      }
+      .sch-stat span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .sch-controls {
+        display: flex;
+        gap: 10px;
+        padding: 20px 48px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      #sch-search {
+        flex: 1;
+        min-width: 200px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 16px;
+        color: var(--txt);
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      #sch-search:focus {
+        border-color: var(--green);
+      }
+      .sch-filter {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        color: var(--sub);
+        padding: 10px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .sch-filter.active,
+      .sch-filter:hover {
+        background: var(--green);
+        border-color: var(--green);
+        color: #fff;
+      }
+
+      .sch-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        padding: 0 48px 40px;
+      }
+      .sch-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        animation: fadeUp 0.4s ease both;
+        position: relative;
+        overflow: hidden;
+      }
+      .sch-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--green), var(--accent));
+      }
+      .sch-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 36px rgba(16, 185, 129, 0.15);
+        border-color: var(--green);
+      }
+      .sch-provider {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 8px;
+      }
+      .sch-name {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--txt);
+        margin-bottom: 8px;
+        line-height: 1.35;
+      }
+      .sch-amount {
+        font-size: 22px;
+        font-weight: 900;
+        color: var(--green);
+        margin-bottom: 12px;
+      }
+      .sch-tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .sch-tag {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--green);
+      }
+      .sch-deadline {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .sch-deadline strong {
+        color: var(--gold);
+      }
+
+      .btn-apply {
+        width: 100%;
+        margin-top: 16px;
+        background: linear-gradient(135deg, var(--green), #059669);
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 13px;
+        transition:
+          opacity 0.2s,
+          transform 0.1s;
+      }
+      .btn-apply:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+      }
+
+      .save-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        transition: transform 0.2s;
+      }
+      .save-btn:hover {
+        transform: scale(1.2);
+      }
+
+      .no-sch {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 60px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 900px) {
+        .sch-grid {
+          grid-template-columns: repeat(2, 1fr);
+          padding: 0 24px 32px;
+        }
+        .sch-controls {
+          padding: 16px 24px;
+        }
+      }
+      @media (max-width: 600px) {
+        .sch-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a class="logo" href="index.html">
+        <div class="logo-icon">U</div>
+        <div class="logo-text">
+          <strong>UNIVERSAL</strong><span>STUDENT HUB</span>
+        </div>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-btn" data-page="index.html" href="index.html">Home</a>
+        <a
+          class="nav-btn"
+          data-page="scholarships.html"
+          href="scholarships.html"
+          >Scholarships</a
+        >
+        <a class="nav-btn" data-page="dashboard.html" href="dashboard.html"
+          >Dashboard</a
+        >
+        <a
+          class="nav-btn"
+          href="#"
+          onclick="toast('Resources — coming soon 🚀', '#7c3aed')"
+          >Resources</a
+        >
+        <a
+          class="nav-btn"
+          href="#"
+          onclick="toast('About Us — coming soon 📖', '#7c3aed')"
+          >About Us</a
+        >
+      </div>
+      <div class="nav-right">
+        <button id="theme-toggle">🌙</button>
+        <button class="btn-login" id="open-login">Login</button>
+        <button class="hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+      <h1>Find Your <span>Scholarship</span> 🎓</h1>
+      <p>
+        Discover thousands of scholarships matched to your profile. Filter by
+        field, amount, and deadline.
+      </p>
+      <div class="sch-stats">
+        <div class="sch-stat">
+          <strong>2,400+</strong><span>Scholarships</span>
+        </div>
+        <div class="sch-stat">
+          <strong>$48M+</strong><span>Total Awards</span>
+        </div>
+        <div class="sch-stat"><strong>150+</strong><span>Countries</span></div>
+        <div class="sch-stat">
+          <strong>98%</strong><span>Success Rate</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="sch-controls">
+      <input
+        id="sch-search"
+        placeholder="🔍  Search by name or provider…"
+        oninput="renderSch()"
+      />
+      <button class="sch-filter active" onclick="setSF(this, 'all')">
+        All
+      </button>
+      <button class="sch-filter" onclick="setSF(this, 'stem')">STEM</button>
+      <button class="sch-filter" onclick="setSF(this, 'arts')">Arts</button>
+      <button class="sch-filter" onclick="setSF(this, 'business')">
+        Business
+      </button>
+      <button class="sch-filter" onclick="setSF(this, 'need')">
+        Need-Based
+      </button>
+    </div>
+
+    <!-- GRID -->
+    <div class="sch-grid" id="sch-grid"></div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal">
+        <button class="modal-close" id="modal-close">✕</button>
+        <h2>Welcome Back 👋</h2>
+        <p>Sign in or create your student account.</p>
+        <div class="modal-tabs">
+          <div class="modal-tab active" onclick="activateTab('login')">
+            Login
+          </div>
+          <div class="modal-tab" onclick="activateTab('signup')">Sign Up</div>
+        </div>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+    <div id="toast"></div>
+
+    <script src="main.js"></script>
+    <script src="Scholarships.js">
+    
+    </script>
+  </body>
+</html>

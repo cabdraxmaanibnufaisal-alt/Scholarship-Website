@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal Student Hub — Home</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ── HOME-ONLY STYLES ── */
+
+      /* Hero */
+      .hero {
+        background: linear-gradient(
+          120deg,
+          #070d1c 0%,
+          #0f2044 55%,
+          #070d1c 100%
+        );
+        padding: 64px 48px 56px;
+        display: flex;
+        align-items: center;
+        gap: 48px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-glow {
+        position: absolute;
+        top: -40%;
+        left: 30%;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.18) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        animation: pulse 4s ease-in-out infinite;
+      }
+      .hero-text {
+        flex: 1;
+        z-index: 1;
+      }
+      .hero-title {
+        font-size: 52px;
+        font-weight: 900;
+        line-height: 1.08;
+        margin-bottom: 16px;
+      }
+      .hero-title .white {
+        color: #fff;
+      }
+      .hero-title .gold {
+        color: var(--gold);
+      }
+      .hero-desc {
+        color: var(--sub);
+        font-size: 14px;
+        margin-bottom: 26px;
+        line-height: 1.7;
+        max-width: 420px;
+      }
+
+      .search-row {
+        display: flex;
+        gap: 8px;
+        max-width: 460px;
+      }
+      .search-wrap {
+        position: relative;
+        flex: 1;
+      }
+      #search-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 11px 16px;
+        color: var(--txt);
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      #search-input:focus {
+        border-color: var(--accent);
+      }
+      #search-results {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        z-index: 200;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      }
+      .sri {
+        padding: 10px 16px;
+        cursor: pointer;
+        font-size: 13px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: background 0.15s;
+      }
+      .sri:last-child {
+        border-bottom: none;
+      }
+      .sri:hover {
+        background: rgba(59, 130, 246, 0.1);
+      }
+      .btn-search {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #fff;
+        border: none;
+        padding: 11px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 13px;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+      }
+      .btn-search:hover {
+        opacity: 0.85;
+      }
+
+      .hero-visual {
+        flex: 1;
+        z-index: 1;
+      }
+      .hero-img-box {
+        border-radius: 16px;
+        background: linear-gradient(145deg, #1e3a6e, #0f2044);
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 72px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+        border: 1px solid var(--border);
+        animation: float 3s ease-in-out infinite;
+      }
+
+      /* Feature Cards */
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        padding: 24px 48px;
+      }
+      .fc {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 22px;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          border-color 0.2s;
+      }
+      .fc:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+        border-color: var(--accent);
+      }
+      .fc .icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+      .fc h3 {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--txt);
+        margin-bottom: 6px;
+      }
+      .fc p {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+      .fc a {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      /* Opportunities */
+      .opp-sec {
+        padding: 0 48px 28px;
+      }
+      .sec-hdr {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .sec-hdr h2 {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--txt);
+      }
+      .view-all {
+        color: var(--accent);
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .filter-tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .ftab {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        color: var(--sub);
+        padding: 5px 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .ftab.active,
+      .ftab:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      .opp-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .opp-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        animation: fadeUp 0.4s ease both;
+      }
+      .opp-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+      .no-res {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 40px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .opp-title {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--txt);
+        margin: 10px 0 6px;
+      }
+      .opp-val {
+        color: var(--gold);
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .opp-meta {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .btn-det {
+        margin-top: 14px;
+        background: transparent;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 7px 18px;
+        border-radius: 7px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .btn-det:hover {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      /* CTA */
+      .cta-banner {
+        margin: 0 48px 28px;
+        background: linear-gradient(120deg, #1e3a6e, #1d4ed8);
+        border-radius: 16px;
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .cta-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .cta-left > span {
+        font-size: 36px;
+      }
+      .cta-title {
+        font-weight: 800;
+        font-size: 17px;
+        color: #fff;
+      }
+      .cta-sub {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 13px;
+        margin-top: 4px;
+      }
+      .btn-join {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: #fff;
+        border: none;
+        padding: 13px 32px;
+        border-radius: 24px;
+        cursor: pointer;
+        font-weight: 800;
+        font-size: 14px;
+        white-space: nowrap;
+        transition:
+          transform 0.15s,
+          opacity 0.2s;
+      }
+      .btn-join:hover {
+        transform: scale(1.04);
+        opacity: 0.9;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .hero {
+          flex-direction: column;
+          padding: 40px 24px;
+        }
+        .hero-title {
+          font-size: 36px;
+        }
+        .feature-grid {
+          grid-template-columns: repeat(2, 1fr);
+          padding: 16px 24px;
+        }
+        .opp-grid {
+          grid-template-columns: 1fr;
+        }
+        .opp-sec {
+          padding: 0 24px 24px;
+        }
+        .cta-banner {
+          margin: 0 24px 24px;
+        }
+      }
+      @media (max-width: 600px) {
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+        .cta-banner {
+          flex-direction: column;
+          text-align: center;
+          gap: 16px;
+          margin: 0 16px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a class="logo" href="index.html">
+        <div class="logo-icon">U</div>
+        <div class="logo-text">
+          <strong>UNIVERSAL</strong><span>STUDENT HUB</span>
+        </div>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a class="nav-btn" data-page="index.html" href="index.html">Home</a>
+        <a
+          class="nav-btn"
+          data-page="scholarships.html"
+          href="scholarships.html"
+          >Scholarships</a
+        >
+        <a class="nav-btn" data-page="dashboard.html" href="dashboard.html"
+          >Dashboard</a
+        >
+        <a
+          class="nav-btn"
+          href="#"
+          onclick="toast('Resources — coming soon 🚀', '#7c3aed')"
+          >Resources</a
+        >
+        <a
+          class="nav-btn"
+          href="#"
+          onclick="toast('About Us — coming soon 📖', '#7c3aed')"
+          >About Us</a
+        >
+      </div>
+      <div class="nav-right">
+        <button id="theme-toggle">🌙</button>
+        <button class="btn-login" id="open-login">Login</button>
+        <button class="hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-text">
+        <div class="hero-title">
+          <span class="white">Learn. Track.<br /></span>
+          <span class="gold">Succeed.</span>
+        </div>
+        <p class="hero-desc">
+          Your all-in-one platform to find courses, discover scholarships,
+          manage assignments and achieve your academic goals.
+        </p>
+        <div class="search-row">
+          <div class="search-wrap">
+            <input
+              id="search-input"
+              placeholder="Search courses, scholarships…"
+              autocomplete="off"
+            />
+            <div id="search-results"></div>
+          </div>
+          <button class="btn-search" onclick="doSearch()">🔍 Search</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-img-box">🏛️</div>
+      </div>
+    </div>
+
+    <!-- FEATURE CARDS -->
+    <div class="feature-grid">
+      <div class="fc" onclick="location.href = 'scholarships.html'">
+        <div class="icon">📘</div>
+        <h3>Courses</h3>
+        <p>Explore courses from top universities worldwide.</p>
+        <a>Explore Courses →</a>
+      </div>
+      <div class="fc" onclick="location.href = 'scholarships.html'">
+        <div class="icon">🎓</div>
+        <h3>Scholarships</h3>
+        <p>Find scholarships that match your profile.</p>
+        <a>Find Scholarships →</a>
+      </div>
+      <div class="fc" onclick="location.href = 'dashboard.html'">
+        <div class="icon">📋</div>
+        <h3>Assignments</h3>
+        <p>Organize and track your assignments.</p>
+        <a>Go to Dashboard →</a>
+      </div>
+      <div class="fc" onclick="location.href = 'dashboard.html'">
+        <div class="icon">📊</div>
+        <h3>My Progress</h3>
+        <p>Track your academic progress and goals.</p>
+        <a>View Progress →</a>
+      </div>
+    </div>
+
+    <!-- OPPORTUNITIES -->
+    <div class="opp-sec">
+      <div class="sec-hdr">
+        <h2>Latest Opportunities</h2>
+        <a class="view-all" href="scholarships.html">View All →</a>
+      </div>
+      <div class="filter-tabs">
+        <button class="ftab active" data-f="all">All</button>
+        <button class="ftab" data-f="scholarship">🎓 Scholarships</button>
+        <button class="ftab" data-f="course">📘 Courses</button>
+        <button class="ftab" data-f="event">📅 Events</button>
+      </div>
+      <div class="opp-grid" id="opp-grid"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-banner">
+      <div class="cta-left">
+        <span>🎓</span>
+        <div>
+          <div class="cta-title">
+            Empowering students to learn, grow and succeed.
+          </div>
+          <div class="cta-sub">
+            Join thousands of students achieving their dreams.
+          </div>
+        </div>
+      </div>
+      <button class="btn-join" onclick="openModal('signup')">Join Now</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <div class="fi">U</div>
+            <div class="fb">UNIVERSAL<br /><span>STUDENT HUB</span></div>
+          </div>
+          <p>
+            We provide the tools and resources students need to succeed
+            academically and professionally.
+          </p>
+          <div class="socials">
+            <div class="soc">f</div>
+            <div class="soc">𝕏</div>
+            <div class="soc">in</div>
+            <div class="soc">▶</div>
+            <div class="soc">📷</div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <div class="fl" onclick="location.href = 'index.html'">Home</div>
+          <div class="fl" onclick="location.href = 'scholarships.html'">
+            Scholarships
+          </div>
+          <div class="fl" onclick="location.href = 'dashboard.html'">
+            Dashboard
+          </div>
+          <div class="fl">Blog</div>
+          <div class="fl">About Us</div>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <div class="fl">Blog</div>
+          <div class="fl">Guides</div>
+          <div class="fl">FAQ</div>
+          <div class="fl">Support</div>
+          <div class="fl">Privacy Policy</div>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <div class="fl">✉️ support@example.edu</div>
+          <div class="fl">📞 +1 (123) 456-7890</div>
+          <div class="fl">📍 123 Education St, New York</div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2025 Universal Student Hub. All rights reserved.
+      </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal">
+        <button class="modal-close" id="modal-close">✕</button>
+        <h2>Welcome Back 👋</h2>
+        <p>Sign in or create your student account.</p>
+        <div class="modal-tabs">
+          <div class="modal-tab active" onclick="activateTab('login')">
+            Login
+          </div>
+          <div class="modal-tab" onclick="activateTab('signup')">Sign Up</div>
+        </div>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+    <div id="toast"></div>
+
+    <script src="main.js"></script>
+    <script>
+      /* ── HOME OPPORTUNITIES ── */
+      const opps = [
+        {
+          type: "scholarship",
+          badge: "bg",
+          label: "Scholarship",
+          title: "Google Generation Scholarship",
+          val: "$10,000 Award",
+          m1: "Deadline: May 15, 2025",
+          m2: "In any country",
+        },
+        {
+          type: "course",
+          badge: "bp",
+          label: "Course",
+          title: "Full Stack Web Development",
+          val: "⭐ 4.8 (12.6k reviews)",
+          m1: "Beginner to Advanced",
+          m2: "",
+        },
+        {
+          type: "event",
+          badge: "bb",
+          label: "Event",
+          title: "Global Education Summit 2025",
+          val: "April 20, 2025",
+          m1: "Free Registration",
+          m2: "",
+        },
+        {
+          type: "scholarship",
+          badge: "bg",
+          label: "Scholarship",
+          title: "Microsoft STEM Scholarship",
+          val: "$5,000 Award",
+          m1: "Deadline: June 30, 2025",
+          m2: "STEM students only",
+        },
+        {
+          type: "course",
+          badge: "bp",
+          label: "Course",
+          title: "Data Science Fundamentals",
+          val: "⭐ 4.6 (8.2k reviews)",
+          m1: "Intermediate Level",
+          m2: "",
+        },
+        {
+          type: "event",
+          badge: "bb",
+          label: "Event",
+          title: "Coding Bootcamp Hackathon",
+          val: "July 10, 2025",
+          m1: "Cash prizes",
+          m2: "",
+        },
+      ];
+      function renderOpps(f) {
+        const g = document.getElementById("opp-grid");
+        const list = f === "all" ? opps : opps.filter((o) => o.type === f);
+        if (!list.length) {
+          g.innerHTML = '<div class="no-res">😔 No results found.</div>';
+          return;
+        }
+        g.innerHTML = list
+          .map(
+            (o, i) => `
+    <div class="opp-card" style="animation-delay:${i * 0.07}s">
+      <span class="badge ${o.badge}">${o.label}</span>
+      <div class="opp-title">${o.title}</div>
+      <div class="opp-val">${o.val}</div>
+      <div class="opp-meta">${o.m1}</div>
+      ${o.m2 ? '<div class="opp-meta">' + o.m2 + "</div>" : ""}
+      <button class="btn-det" onclick="toast('Opening: ${o.title.replace(/'/g, "\\'")}','#3b82f6')">View Details</button>
+    </div>`,
+          )
+          .join("");
+      }
+      renderOpps("all");
+      document.querySelectorAll(".ftab").forEach((t) =>
+        t.addEventListener("click", function () {
+          document
+            .querySelectorAll(".ftab")
+            .forEach((x) => x.classList.remove("active"));
+          this.classList.add("active");
+          renderOpps(this.dataset.f);
+        }),
+      );
+
+      /* ── LIVE SEARCH ── */
+      const searchData = [
+        {
+          label: "Scholarship",
+          title: "Google Generation Scholarship",
+          page: "scholarships.html",
+        },
+        {
+          label: "Scholarship",
+          title: "Microsoft STEM Scholarship",
+          page: "scholarships.html",
+        },
+        {
+          label: "Scholarship",
+          title: "Gates Millennium Scholars",
+          page: "scholarships.html",
+        },
+        {
+          label: "Course",
+          title: "Full Stack Web Development",
+          page: "scholarships.html",
+        },
+        {
+          label: "Course",
+          title: "Data Science Fundamentals",
+          page: "scholarships.html",
+        },
+      ];
+      document
+        .getElementById("search-input")
+        .addEventListener("input", function () {
+          const q = this.value.trim().toLowerCase();
+          const box = document.getElementById("search-results");
+          if (!q) {
+            box.style.display = "none";
+            return;
+          }
+          const hits = searchData
+            .filter((x) => x.title.toLowerCase().includes(q))
+            .slice(0, 5);
+          if (!hits.length) {
+            box.style.display = "none";
+            return;
+          }
+          box.innerHTML = hits
+            .map(
+              (h) =>
+                `<div class="sri" onclick="location.href='${h.page}'">
+      <span class="badge ${h.label === "Scholarship" ? "bg" : "bp"}">${h.label}</span>${h.title}
+    </div>`,
+            )
+            .join("");
+          box.style.display = "block";
+        });
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-wrap"))
+          document.getElementById("search-results").style.display = "none";
+      });
+      function doSearch() {
+        const q = document.getElementById("search-input").value.trim();
+        if (q) toast('Searching "' + q + '"…', "#3b82f6");
+        document.getElementById("search-results").style.display = "none";
+      }
+      window.doSearch = doSearch;
+    </script>
+  </body>
+</html>
